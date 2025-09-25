@@ -10,14 +10,17 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { ListFilter, FileDown } from 'lucide-react';
 import { UploadDocumentButton } from './upload-document-button';
+import { DocumentTargetingFilter } from './document-targeting-filter';
 
 type DocumentListControlsProps = {
   onUploadComplete: () => void;
   activeTab: 'all' | 'pending' | 'completed';
   onTabChange: (tab: 'all' | 'pending' | 'completed') => void;
+  selectedTargeting: 'all' | 'department' | 'role' | 'executive' | 'management' | 'senior' | 'junior';
+  onTargetingChange: (targeting: 'all' | 'department' | 'role' | 'executive' | 'management' | 'senior' | 'junior') => void;
 };
 
-export function DocumentListControls({ onUploadComplete, activeTab, onTabChange }: DocumentListControlsProps) {
+export function DocumentListControls({ onUploadComplete, activeTab, onTabChange, selectedTargeting, onTargetingChange }: DocumentListControlsProps) {
   return (
     <div className="flex items-center">
       <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as 'all' | 'pending' | 'completed')}>
@@ -28,6 +31,10 @@ export function DocumentListControls({ onUploadComplete, activeTab, onTabChange 
         </TabsList>
       </Tabs>
       <div className="ml-auto flex items-center gap-2">
+        <DocumentTargetingFilter 
+          selectedTargeting={selectedTargeting}
+          onTargetingChange={onTargetingChange}
+        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="h-8 gap-1">

@@ -18,6 +18,7 @@ import { getCategories } from '@/lib/services/categories.service';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { filterDocumentsByTargeting, TargetingFilter } from '@/lib/utils/document-targeting-utils';
 
 export default function DashboardPage() {
   const { user: currentUser, loading: authLoading } = useAuth();
@@ -27,10 +28,15 @@ export default function DashboardPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'completed'>('all');
+  const [selectedTargeting, setSelectedTargeting] = useState<TargetingFilter>('all');
 
-  // Filter documents based on action points completion status
+  // Filter documents based on completion status and targeting
   const filteredDocuments = useMemo(() => {
-    return userDocuments.filter(doc => {
+    // First filter by targeting
+    const targetingFilteredDocs = filterDocumentsByTargeting(userDocuments, selectedTargeting);
+    
+    // Then filter by completion status
+    return targetingFilteredDocs.filter(doc => {
       const completedActions = doc.actionPoints.filter(ap => ap.isCompleted).length;
       const totalActions = doc.actionPoints.length;
       const isCompleted = totalActions > 0 && completedActions === totalActions;
@@ -46,7 +52,7 @@ export default function DashboardPage() {
           return true;
       }
     });
-  }, [userDocuments, activeTab]);
+  }, [userDocuments, activeTab, selectedTargeting]);
 
   useEffect(() => {
     async function fetchInitialData() {
@@ -134,6 +140,8 @@ export default function DashboardPage() {
             onUploadComplete={() => {}} 
             activeTab={activeTab}
             onTabChange={setActiveTab}
+            selectedTargeting={selectedTargeting}
+            onTargetingChange={setSelectedTargeting}
           />
         </CardHeader>
         <CardContent>

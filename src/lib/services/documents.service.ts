@@ -19,6 +19,8 @@ export async function getAllDocuments(): Promise<Document[]> {
             id: doc.id,
             ...data,
             uploadedAt: (data.uploadedAt as Timestamp).toDate().toISOString(),
+            // Provide default values for new fields to ensure backward compatibility
+            targetingType: data.targetingType || 'department',
         } as Document
     });
   } catch (error) {
@@ -55,6 +57,8 @@ export async function getDocumentsForUser(userId: string): Promise<Document[]> {
                     id: doc.id,
                     ...data,
                     uploadedAt: (data.uploadedAt as Timestamp).toDate().toISOString(),
+                    // Provide default values for new fields to ensure backward compatibility
+                    targetingType: data.targetingType || 'department',
                 } as Document;
                 docMap.set(doc.id, document);
             });
@@ -72,6 +76,8 @@ export async function getDocumentsForUser(userId: string): Promise<Document[]> {
                 id: doc.id,
                 ...data,
                 uploadedAt: (data.uploadedAt as Timestamp).toDate().toISOString(),
+                // Provide default values for new fields to ensure backward compatibility
+                targetingType: data.targetingType || 'department',
             } as Document;
             docMap.set(doc.id, document); // This will overwrite duplicates, which is fine
         });
@@ -115,6 +121,8 @@ export async function getDocumentById(docId: string): Promise<Document | null> {
             id: docSnap.id,
             ...data,
             uploadedAt: (data.uploadedAt as Timestamp).toDate().toISOString(),
+            // Provide default values for new fields to ensure backward compatibility
+            targetingType: data.targetingType || 'department',
         } as Document;
     } catch (error) {
         console.error(`Error getting document ${docId}:`, error);
@@ -125,10 +133,22 @@ export async function getDocumentById(docId: string): Promise<Document | null> {
 export async function updateDocument(docId: string, updates: Partial<Document>): Promise<void> {
     const db = getDb();
     try {
-        await db.collection(DOCUMENTS_COLLECTION).doc(docId).update(updates);
+        // Filter out undefined values to avoid Firestore issues
+        const filteredUpdates: { [key: string]: any } = {};
+        Object.entries(updates).forEach(([key, value]) => {
+            if (value !== undefined) {
+                filteredUpdates[key] = value;
+            }
+        });
+
+        // Only update if there are actual changes
+        if (Object.keys(filteredUpdates).length > 0) {
+            await db.collection(DOCUMENTS_COLLECTION).doc(docId).update(filteredUpdates);
+        }
     } catch (error) {
         console.error(`Error updating document ${docId}:`, error);
-        throw new Error('Could not update document.');
+        console.error('Update data:', updates);
+        throw new Error(`Could not update document: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 }
 

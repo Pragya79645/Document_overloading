@@ -13,6 +13,7 @@ import { FileText, Calendar, User, ChevronRight } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 import type { Document, User as UserType } from '@/lib/types';
 import { DocumentViewDialog } from './document-view-dialog';
+import { DocumentTargetingBadge } from '@/components/ui/document-targeting-badge';
 
 type DocumentCardProps = {
   document: Document;
@@ -31,9 +32,12 @@ export function DocumentCard({ document, uploader }: DocumentCardProps) {
       <CardHeader>
         <CardTitle className="flex items-start justify-between gap-4">
           <span className="font-headline text-lg">{document.title}</span>
-          <Badge variant={progress === 100 ? 'secondary' : 'outline'}>
-            {progress === 100 ? 'Completed' : 'Pending'}
-          </Badge>
+          <div className="flex gap-2">
+            <DocumentTargetingBadge document={document} />
+            <Badge variant={progress === 100 ? 'secondary' : 'outline'}>
+              {progress === 100 ? 'Completed' : 'Pending'}
+            </Badge>
+          </div>
         </CardTitle>
         <CardDescription className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs">
           <span className="flex items-center gap-1.5">

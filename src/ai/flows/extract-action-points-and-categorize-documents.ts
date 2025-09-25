@@ -12,11 +12,13 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { createDocument, updateDocument } from '@/lib/services/documents.service';
 import { Document } from '@/lib/types';
-import { getUsersInCategory } from '@/lib/services/users.service';
+import { getUsersInCategory, getUsers } from '@/lib/services/users.service';
 import { createBulkNotifications } from '@/lib/services/notifications.service';
 import { getCategories } from '@/lib/services/categories.service';
 import { summarizeDocument } from './summarize-document';
 import { multiLanguageProcessor } from '@/lib/services/multi-language-processor.service';
+import { classifyDocumentTargeting } from '@/lib/services/document-targeting.service';
+import { getUsersForDocument } from '@/lib/utils/document-targeting-utils';
 import mammoth from 'mammoth';
 import axios from 'axios';
 
@@ -43,6 +45,16 @@ const ExtractActionPointsAndCategorizeDocumentsOutputSchema = z.object({
   priority: z
     .enum(['low', 'medium', 'high'])
     .describe('Priority level determined by the AI based on urgency indicators.'),
+  targetingClassification: z.object({
+    targetingType: z.enum(['department', 'role']).describe('Whether this document is for a whole department or specific role'),
+    confidence: z.number().min(0).max(1).describe('Confidence score for the targeting classification'),
+    reasoning: z.string().describe('Explanation for the targeting classification'),
+    roleDetails: z.object({
+      roleTitle: z.string(),
+      roleLevel: z.enum(['executive', 'management', 'senior', 'junior']),
+      department: z.string()
+    }).optional().describe('Details if document is role-specific')
+  }).describe('Classification of document targeting'),
   crossDepartmentAnalysis: z.object({
     affectedDepartments: z.array(z.object({
       departmentName: z.string(),
@@ -278,6 +290,7 @@ const extractActionPointsAndCategorizeDocumentsFlow = ai.defineFlow(
       uploaderId: input.uploaderId,
       fileUrl: input.fileUrl,
       categoryId: '', // Will be updated by AI
+      targetingType: 'department', // Default, will be updated by AI
       actionPoints: [], // Will be updated by AI
       status: 'processing',
     };
@@ -406,15 +419,83 @@ const extractActionPointsAndCategorizeDocumentsFlow = ai.defineFlow(
     // Remove duplicates from tags
     const uniqueTags = [...new Set(crossDepartmentTags)];
 
-    await updateDocument(documentId, {
-      categoryId: categoryId,
-      actionPoints: mappedActionPoints,
-      priority: output.priority, // Add AI-determined priority
-      affectedDepartmentIds: affectedDepartmentIds.length > 0 ? affectedDepartmentIds : undefined,
-      crossDepartmentTags: uniqueTags.length > 0 ? uniqueTags : undefined,
-      departmentRelevanceScore: Object.keys(departmentRelevanceScore).length > 0 ? departmentRelevanceScore : undefined,
-      status: 'processed'
-    });
+    // 4. Classify document targeting (department vs role-specific)
+    let documentContent = '';
+    if (isImageDocument(input.fileType, input.originalFilename)) {
+      // For images, we need to re-extract the text for targeting classification
+      try {
+        const fileBuffer = await downloadFileAsBuffer(input.fileUrl);
+        const processedDocument = await multiLanguageProcessor.processDocument(fileBuffer);
+        documentContent = processedDocument.translatedText;
+      } catch (error) {
+        console.warn('Could not extract text for targeting classification from image:', error);
+        documentContent = input.title; // Fallback to title only
+      }
+    } else if (isWordDocument(input.fileType, input.originalFilename)) {
+      try {
+        const extractedText = await extractTextFromWordDocument(input.fileUrl);
+        const processedDocument = await multiLanguageProcessor.translateToEnglish(extractedText);
+        documentContent = processedDocument.translatedText;
+      } catch (error) {
+        console.warn('Could not extract text for targeting classification from Word document:', error);
+        documentContent = input.title;
+      }
+    } else {
+      // For PDFs and other types, use title and available content
+      documentContent = input.title + ' ' + (output.actionPoints.join(' ') || '');
+    }
+
+    // Perform document targeting classification
+    const targetingClassification = classifyDocumentTargeting(
+      input.title,
+      documentContent,
+      categoryId
+    );
+
+    console.log(`Document targeting classification: ${targetingClassification.targetingType} (confidence: ${targetingClassification.confidence})`);
+
+    try {
+      const updateData: Partial<Document> = {
+        categoryId: categoryId,
+        actionPoints: mappedActionPoints,
+        priority: output.priority,
+        targetingType: targetingClassification.targetingType,
+        status: 'processed'
+      };
+
+      // Add optional fields only if they have meaningful values
+      if (targetingClassification.roleClassification?.roleTitle) {
+        updateData.specificRole = targetingClassification.roleClassification.roleTitle;
+      }
+
+      if (targetingClassification.roleClassification) {
+        updateData.roleClassification = {
+          departmentId: targetingClassification.roleClassification.departmentId,
+          roleTitle: targetingClassification.roleClassification.roleTitle,
+          roleLevel: targetingClassification.roleClassification.roleLevel,
+          confidence: targetingClassification.confidence
+        };
+      }
+
+      if (affectedDepartmentIds.length > 0) {
+        updateData.affectedDepartmentIds = affectedDepartmentIds;
+      }
+
+      if (uniqueTags.length > 0) {
+        updateData.crossDepartmentTags = uniqueTags;
+      }
+
+      if (Object.keys(departmentRelevanceScore).length > 0) {
+        updateData.departmentRelevanceScore = departmentRelevanceScore;
+      }
+
+      await updateDocument(documentId, updateData);
+      console.log(`Successfully updated document ${documentId} with targeting classification`);
+    } catch (updateError) {
+      console.error('Failed to update document with targeting classification:', updateError);
+      // Don't fail the entire process, but log the error
+      await updateDocument(documentId, { status: 'processed' }); // At least mark as processed
+    }
     
     // 4. Generate document summary in parallel
     try {
@@ -431,30 +512,69 @@ const extractActionPointsAndCategorizeDocumentsFlow = ai.defineFlow(
       // Don't fail the entire process if summary generation fails
     }
     
-    // 5. Send notifications to users in affected departments
-    const allNotificationUserIds = new Set<string>();
-    
-    // Notify primary department
-    if (matchedCategory) {
-        const primaryUsers = await getUsersInCategory(matchedCategory.id);
-        primaryUsers.forEach(user => allNotificationUserIds.add(user.id));
-    }
-    
-    // Notify affected departments
-    for (const deptId of affectedDepartmentIds) {
-        const deptUsers = await getUsersInCategory(deptId);
-        deptUsers.forEach(user => allNotificationUserIds.add(user.id));
-    }
-    
-    if (allNotificationUserIds.size > 0) {
-        const notificationMessage = affectedDepartmentIds.length > 0 
+    // 5. Send notifications using proper targeting logic
+    try {
+      // Get all users and filter based on document targeting
+      const allUsers = await getUsers();
+      
+      // Create a document object for targeting check with all required fields
+      const documentForTargeting: Document = {
+        id: documentId,
+        title: input.title,
+        originalFilename: input.originalFilename,
+        fileType: input.fileType.split('/')[1]?.toUpperCase() || 'FILE',
+        fileUrl: input.fileUrl,
+        uploadedAt: new Date().toISOString(),
+        uploaderId: input.uploaderId,
+        categoryId: categoryId,
+        targetingType: targetingClassification.targetingType,
+        roleClassification: targetingClassification.roleClassification ? {
+          departmentId: targetingClassification.roleClassification.departmentId,
+          roleTitle: targetingClassification.roleClassification.roleTitle,
+          roleLevel: targetingClassification.roleClassification.roleLevel,
+          confidence: targetingClassification.confidence
+        } : undefined,
+        affectedDepartmentIds: affectedDepartmentIds.length > 0 ? affectedDepartmentIds : undefined,
+        actionPoints: mappedActionPoints,
+        priority: output.priority,
+        status: 'processed'
+      };
+
+      // Get users who should receive notifications based on targeting
+      const targetUserIds = getUsersForDocument(documentForTargeting, allUsers);
+      
+      if (targetUserIds.length > 0) {
+        const notificationMessage = targetingClassification.targetingType === 'role' 
+          ? `New role-specific document: "${input.title}" (targeted at ${targetingClassification.roleClassification?.roleTitle || 'specific role'})`
+          : affectedDepartmentIds.length > 0 
             ? `New cross-department document: "${input.title}" (affects multiple departments)`
             : `New document in ${matchedCategory?.name || 'Unknown'}: "${input.title}"`;
             
-        await createBulkNotifications(Array.from(allNotificationUserIds), {
-            message: notificationMessage,
-            href: `/dashboard/doc/${documentId}`
+        await createBulkNotifications(targetUserIds, {
+          message: notificationMessage,
+          href: `/dashboard/doc/${documentId}`
         });
+        
+        console.log(`Sent notifications to ${targetUserIds.length} users based on document targeting`);
+      } else {
+        console.log('No users found matching document targeting criteria');
+      }
+    } catch (notificationError) {
+      console.error('Failed to send targeted notifications:', notificationError);
+      // Fallback to original notification logic
+      const fallbackUserIds = new Set<string>();
+      
+      if (matchedCategory) {
+        const primaryUsers = await getUsersInCategory(matchedCategory.id);
+        primaryUsers.forEach(user => fallbackUserIds.add(user.id));
+      }
+      
+      if (fallbackUserIds.size > 0) {
+        await createBulkNotifications(Array.from(fallbackUserIds), {
+          message: `New document: "${input.title}"`,
+          href: `/dashboard/doc/${documentId}`
+        });
+      }
     }
 
     return {
@@ -462,6 +582,16 @@ const extractActionPointsAndCategorizeDocumentsFlow = ai.defineFlow(
       department: output.primaryDepartment,
       actionPoints: output.actionPoints,
       priority: output.priority, // Include AI-determined priority in return
+      targetingClassification: {
+        targetingType: targetingClassification.targetingType,
+        confidence: targetingClassification.confidence,
+        reasoning: targetingClassification.reasoning,
+        roleDetails: targetingClassification.roleClassification ? {
+          roleTitle: targetingClassification.roleClassification.roleTitle,
+          roleLevel: targetingClassification.roleClassification.roleLevel,
+          department: output.primaryDepartment
+        } : undefined
+      },
       crossDepartmentAnalysis: output.crossDepartmentAnalysis,
     };
   }

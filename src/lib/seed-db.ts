@@ -13,32 +13,89 @@ const usersData: Omit<User, 'id'>[] = [
     role: 'admin',
   },
   {
-    name: 'Anoop Menon',
+    name: 'Anoop Menon - Operations Director',
     email: 'anoop.menon@kmrl.co.in',
     avatarUrl: 'https://i.pravatar.cc/150?u=anoop',
     categoryIds: ['ops', 'safety'],
     role: 'user',
+    departmentRoles: {
+      'ops': {
+        roleTitle: 'Operations Director',
+        roleLevel: 'executive'
+      },
+      'safety': {
+        roleTitle: 'Safety Commissioner',
+        roleLevel: 'executive'
+      }
+    }
   },
   {
-    name: 'Priya Nair',
+    name: 'Priya Nair - Finance Manager',
     email: 'priya.nair@kmrl.co.in',
     avatarUrl: 'https://i.pravatar.cc/150?u=priya',
     categoryIds: ['fin', 'proc'],
     role: 'user',
+    departmentRoles: {
+      'fin': {
+        roleTitle: 'Finance Manager',
+        roleLevel: 'management'
+      },
+      'proc': {
+        roleTitle: 'Procurement Specialist',
+        roleLevel: 'senior'
+      }
+    }
   },
   {
-    name: 'Rajesh Kumar',
+    name: 'Rajesh Kumar - Senior Engineer',
     email: 'rajesh.kumar@kmrl.co.in',
     avatarUrl: 'https://i.pravatar.cc/150?u=rajesh',
     categoryIds: ['maint', 'eng'],
     role: 'user',
+    departmentRoles: {
+      'eng': {
+        roleTitle: 'Senior Engineer',
+        roleLevel: 'senior'
+      },
+      'maint': {
+        roleTitle: 'Maintenance Specialist',
+        roleLevel: 'senior'
+      }
+    }
   },
   {
-    name: 'Sunita George',
+    name: 'Sunita George - HR Director',
     email: 'sunita.george@kmrl.co.in',
     avatarUrl: 'https://i.pravatar.cc/150?u=sunita',
     categoryIds: ['hr', 'legal'],
     role: 'user',
+    departmentRoles: {
+      'hr': {
+        roleTitle: 'HR Director',
+        roleLevel: 'executive'
+      },
+      'legal': {
+        roleTitle: 'Legal Counsel',
+        roleLevel: 'senior'
+      }
+    }
+  },
+  // Add some regular department members without specific roles
+  {
+    name: 'John Smith - Engineering Team Member',
+    email: 'john.smith@kmrl.co.in',
+    avatarUrl: 'https://i.pravatar.cc/150?u=john',
+    categoryIds: ['eng'],
+    role: 'user',
+    // No departmentRoles - this means they're a regular team member
+  },
+  {
+    name: 'Sarah Wilson - Finance Team Member',
+    email: 'sarah.wilson@kmrl.co.in',
+    avatarUrl: 'https://i.pravatar.cc/150?u=sarah',
+    categoryIds: ['fin'],
+    role: 'user',
+    // No departmentRoles - this means they're a regular team member
   },
 ];
 
@@ -50,6 +107,7 @@ const documentsData: {data: Omit<Document, 'id'| 'uploadedAt' | 'uploaderId'>, u
       originalFilename: 'vendor_invoices_q2_2024.pdf',
       fileType: 'PDF',
       categoryId: 'fin',
+      targetingType: 'department',
       status: 'processed',
       actionPoints: [
         { id: 'ap-1-1', text: 'Verify payment to "ABC Suppliers" for order #5821', isCompleted: true },
@@ -66,6 +124,7 @@ const documentsData: {data: Omit<Document, 'id'| 'uploadedAt' | 'uploaderId'>, u
       originalFilename: 'KMRL_Onboarding_V3.docx',
       fileType: 'DOCX',
       categoryId: 'hr',
+      targetingType: 'department',
       status: 'processed',
       actionPoints: [
         { id: 'ap-2-1', text: 'Update HR portal with the new policy document', isCompleted: true },
@@ -81,6 +140,7 @@ const documentsData: {data: Omit<Document, 'id'| 'uploadedAt' | 'uploaderId'>, u
       originalFilename: 'July_Maintenance_Plan.pdf',
       fileType: 'PDF',
       categoryId: 'maint',
+      targetingType: 'department',
       status: 'processed',
       actionPoints: [
         { id: 'ap-3-1', text: 'Schedule brake system check for Train Set 04', isCompleted: true },
@@ -97,11 +157,62 @@ const documentsData: {data: Omit<Document, 'id'| 'uploadedAt' | 'uploaderId'>, u
       originalFilename: 'aluva_incident_110724.docx',
       fileType: 'DOCX',
       categoryId: 'safety',
+      targetingType: 'role',
+      specificRole: 'Safety Commissioner',
+      roleClassification: {
+        departmentId: 'safety',
+        roleTitle: 'Safety Commissioner',
+        roleLevel: 'executive',
+        confidence: 0.9
+      },
       status: 'processed',
       actionPoints: [
         { id: 'ap-4-1', text: 'Review CCTV footage of the platform area at 17:45', isCompleted: false },
         { id: 'ap-4-2', text: 'Interview station controller on duty', isCompleted: false },
         { id: 'ap-4-3', text: 'Submit final report to Safety Commissioner by July 20th', isCompleted: false },
+      ],
+      fileUrl: '#',
+    }
+  },
+  {
+    uploaderEmail: 'admin@kmrl.co.in',
+    data: {
+      title: 'Executive Budget Review - Engineering Department',
+      originalFilename: 'eng_budget_executive_review.pdf',
+      fileType: 'PDF',
+      categoryId: 'eng',
+      targetingType: 'role',
+      specificRole: 'CEO of Engineering',
+      roleClassification: {
+        departmentId: 'eng',
+        roleTitle: 'CEO of Engineering',
+        roleLevel: 'executive',
+        confidence: 0.95
+      },
+      status: 'processed',
+      priority: 'high',
+      actionPoints: [
+        { id: 'ap-5-1', text: 'Review Q3 budget allocations for critical projects', isCompleted: false },
+        { id: 'ap-5-2', text: 'Approve additional funding for infrastructure upgrades', isCompleted: false },
+        { id: 'ap-5-3', text: 'Schedule executive meeting with Finance team', isCompleted: false },
+      ],
+      fileUrl: '#',
+    }
+  },
+  {
+    uploaderEmail: 'admin@kmrl.co.in',
+    data: {
+      title: 'All Staff Safety Training - Engineering Department',
+      originalFilename: 'eng_safety_training_all_staff.pdf',
+      fileType: 'PDF',
+      categoryId: 'eng',
+      targetingType: 'department',
+      status: 'processed',
+      priority: 'medium',
+      actionPoints: [
+        { id: 'ap-6-1', text: 'Attend mandatory safety training session by August 15th', isCompleted: false },
+        { id: 'ap-6-2', text: 'Complete online safety certification', isCompleted: false },
+        { id: 'ap-6-3', text: 'Update safety protocols documentation', isCompleted: false },
       ],
       fileUrl: '#',
     }

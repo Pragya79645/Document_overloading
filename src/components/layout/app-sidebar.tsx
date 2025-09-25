@@ -129,6 +129,25 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarGroup>
+          <SidebarGroupLabel>Tools & Demos</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive('/dashboard/document-targeting-demo')}
+                  tooltip="Document Targeting Demo"
+                >
+                  <Link href="/dashboard/document-targeting-demo">
+                    <FileText />
+                    <span>Targeting Demo</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
           <SidebarGroupLabel>Categories</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

@@ -7,6 +7,13 @@ export type User = {
   avatarUrl: string;
   categoryIds: string[];
   role: 'admin' | 'user';
+  // Department-specific role information
+  departmentRoles?: {
+    [departmentId: string]: {
+      roleTitle: string; // e.g., "CEO of Engineering", "Head of Design", "Senior Engineer"
+      roleLevel: 'executive' | 'management' | 'senior' | 'junior';
+    };
+  };
 };
 
 export type AppUser = User;
@@ -37,6 +44,15 @@ export type Document = {
   affectedDepartmentIds?: string[]; // Additional departments that should be aware of this document
   crossDepartmentTags?: string[]; // Tags indicating what makes this relevant to multiple departments
   departmentRelevanceScore?: { [departmentId: string]: number }; // AI-calculated relevance scores (0-1)
+  // Document targeting classification
+  targetingType: 'department' | 'role'; // Whether this document is for a whole department or specific role
+  specificRole?: string; // If targeting a specific role (e.g., "CEO", "Manager", "Head")
+  roleClassification?: {
+    departmentId: string; // The department this role belongs to
+    roleTitle: string; // The specific role title (e.g., "CEO of Engineering", "Manager of Marketing")
+    roleLevel: 'executive' | 'management' | 'senior' | 'junior'; // Role hierarchy level
+    confidence: number; // AI confidence score (0-1) for the classification
+  };
   actionPoints: ActionPoint[];
   summary?: string; // Optional for now
   status?: 'processing' | 'processed' | 'failed';
@@ -118,4 +134,33 @@ export type SharedAwarenessItem = {
     lastUpdated: string;
     href: string;
     tags: string[];
+}
+
+// Document targeting classification types
+export type RolePattern = {
+    roleKeywords: string[]; // Keywords that indicate specific roles
+    departmentKeywords: string[]; // Keywords that indicate departments
+    roleLevel: 'executive' | 'management' | 'senior' | 'junior';
+    commonTitles: string[]; // Common variations of the role title
+}
+
+export type DepartmentRoleMapping = {
+    departmentId: string;
+    departmentName: string;
+    commonRoles: {
+        [roleType: string]: RolePattern;
+    };
+}
+
+export type DocumentTargetingClassification = {
+    targetingType: 'department' | 'role';
+    confidence: number; // 0-1 confidence score
+    reasoning: string; // AI explanation for the classification
+    detectedPatterns: string[]; // Specific patterns that led to this classification
+    roleClassification?: {
+        departmentId: string;
+        roleTitle: string;
+        roleLevel: 'executive' | 'management' | 'senior' | 'junior';
+        matchedKeywords: string[];
+    };
 }
