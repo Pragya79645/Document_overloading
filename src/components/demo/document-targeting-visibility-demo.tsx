@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { User, Users, Crown, Briefcase, FileText, Eye, EyeOff } from 'lucide-react';
 import { isDocumentVisibleToUser } from '@/lib/utils/document-targeting-utils';
 
-// Mock data for demonstration
+// docuStream demo component for document targeting visibility
 const mockUsers: Array<{
   id: string;
   name: string;
@@ -184,11 +184,11 @@ export function DocumentTargetingVisibilityDemo() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Eye className="w-5 h-5" />
-            Document Targeting Visibility Demo
+            <FileText className="w-5 h-5" />
+            docuStream Document Targeting Visibility Demo
           </CardTitle>
           <CardDescription>
-            See exactly how documents are targeted and who can see them based on their roles.
+            See exactly how documents are targeted and who can see them based on their roles in docuStream.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -271,7 +271,7 @@ export function DocumentTargetingVisibilityDemo() {
       {/* Explanation */}
       <Card>
         <CardHeader>
-          <CardTitle>How Document Targeting Works</CardTitle>
+          <CardTitle>How Document Targeting Works in docuStream</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

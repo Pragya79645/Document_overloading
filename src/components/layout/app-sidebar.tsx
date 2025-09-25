@@ -84,9 +84,9 @@ export function AppSidebar() {
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Train className="h-6 w-6" />
+            <FileText className="h-6 w-6" />
           </div>
-          <span className="font-headline text-lg font-semibold">DocuSnap</span>
+          <span className="font-headline text-lg font-semibold">DocuStream</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

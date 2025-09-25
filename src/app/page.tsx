@@ -60,7 +60,7 @@ export default function HomePage() {
                 <div className="flex flex-col">
                   <span className="text-xl font-bold text-slate-900 tracking-tight">DocuStream</span>
                   <span className="text-xs text-slate-500 font-medium uppercase tracking-wide">Document AI</span>
-                  <span className="text-xs text-cyan-600 font-semibold">Bug Slayers</span>
+                 
                 </div>
               </div>
             </div>
