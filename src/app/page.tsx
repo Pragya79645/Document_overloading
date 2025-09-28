@@ -175,13 +175,13 @@ export default function HomePage() {
 
               <div className="space-y-4 lg:space-y-6">
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight">
-                  Transforming Document
-                  <span className="block text-cyan-100"> Intelligence</span>
-                  at KMRL
+                 Optimizing Organisational
+                  <span className="block text-cyan-100"> Productivity</span>
+                  Through Automated Document Handling
                 </h1>
                 <p className="text-lg sm:text-xl text-cyan-50 leading-relaxed max-w-2xl">
                   Enterprise AI platform that revolutionizes document processing with intelligent summarization,
-                  automated routing, and comprehensive knowledge management for metro operations.
+                  automated routing, and comprehensive knowledge management for all organisations.
                 </p>
               </div>
 
@@ -259,7 +259,7 @@ export default function HomePage() {
             </Badge>
             <h2 className="text-4xl font-bold text-slate-900 mb-6 tracking-tight">Enterprise Intelligence Dashboard</h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              Real-time performance metrics across KMRL operations with enterprise-grade monitoring and analytics
+              Real-time performance metrics across all organisations with enterprise-grade monitoring and analytics
             </p>
           </div>
 
@@ -269,17 +269,13 @@ export default function HomePage() {
               <CardContent className="p-8 text-center relative z-10">
                 <div className="flex items-center justify-center mb-6">
                   <div className="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white rounded-3xl p-5 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110">
-                    <IoStatsChart className="text-3xl" />
+                    <FaExclamationTriangle className="text-3xl" />
                   </div>
                 </div>
-                <div className="text-4xl font-bold text-cyan-600 mb-3 tracking-tight group-hover:text-cyan-700 transition-colors duration-300">
-                  47,392
+                <div className="text-2xl font-bold text-cyan-600 mb-3 tracking-tight group-hover:text-cyan-700 transition-colors duration-300">
+                  Actionable Insights / Alerts
                 </div>
-                <div className="text-sm font-semibold text-slate-700 mb-4">Documents Processed</div>
-                <div className="text-xs text-green-600 flex items-center justify-center gap-2 bg-green-50 px-4 py-2 rounded-full border border-green-200">
-                  <MdTrendingUp className="text-sm" />
-                  +12% this week
-                </div>
+                <div className="text-sm font-semibold text-slate-700 mb-4">Documents with high-priority content (compliance deadlines, approvals required, safety issues).</div>
               </CardContent>
             </Card>
 
@@ -306,14 +302,14 @@ export default function HomePage() {
               <CardContent className="p-8 text-center relative z-10">
                 <div className="flex items-center justify-center mb-6">
                   <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-3xl p-5 shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110">
-                    <FaUsers className="text-3xl" />
+                    <FaChartLine className="text-3xl" />
                   </div>
                 </div>
-                <div className="text-4xl font-bold text-orange-600 mb-3 tracking-tight group-hover:text-orange-700 transition-colors duration-300">
-                  156
+                <div className="text-2xl font-bold text-orange-600 mb-3 tracking-tight group-hover:text-orange-700 transition-colors duration-300">
+                  Efficiency & Performance Metrics
                 </div>
-                <div className="text-sm font-semibold text-slate-700 mb-4">Active Users</div>
-                <div className="text-xs text-blue-600 bg-blue-50 px-4 py-2 rounded-full border border-blue-200">
+                <div className="text-sm font-semibold text-slate-700 mb-2">Throughput: Documents processed per hour/day</div>
+                <div className="text-xs text-blue-600 bg-blue-50 px-4 py-2 rounded-full border border-blue-200 inline-block mb-2">
                   8 departments
                 </div>
               </CardContent>
@@ -328,7 +324,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="text-4xl font-bold text-purple-600 mb-3 tracking-tight group-hover:text-purple-700 transition-colors duration-300">
-                  3
+                  50+
                 </div>
                 <div className="text-sm font-semibold text-slate-700 mb-4">Languages Supported</div>
                 <div className="text-xs text-slate-600 bg-slate-100 px-4 py-2 rounded-full border border-slate-200">
@@ -699,190 +695,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Dashboard Preview - Enhanced */}
-      <section id="dashboard" className="py-20 px-6 bg-white relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-20 w-40 h-40 bg-cyan-200 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-32 h-32 bg-blue-200 rounded-full blur-2xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <Badge className="bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 border-cyan-200 mb-6 px-6 py-3 rounded-full shadow-lg">
-              <MdDashboard className="mr-2" />
-              Interactive Preview
-            </Badge>
-            <h2 className="text-4xl font-bold text-slate-900 mb-6 tracking-tight">Intelligent Command Center</h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              Experience real-time insights and comprehensive analytics designed specifically for metro operations
-              excellence
-            </p>
-          </div>
-
-          <Card className="max-w-6xl mx-auto shadow-2xl border-0 overflow-hidden bg-gradient-to-br from-white to-slate-50 hover:shadow-3xl transition-all duration-500">
-            <CardHeader className="bg-gradient-to-r from-cyan-500 via-cyan-600 to-cyan-700 text-white relative overflow-hidden">
-              <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-              <div className="relative z-10 flex items-center justify-between">
-                <CardTitle className="flex items-center gap-3 text-2xl font-bold">
-                  <div className="bg-white/20 p-2 rounded-xl">
-                    <MdDashboard />
-                  </div>
-                  KMRL Document Intelligence Hub
-                </CardTitle>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium">Live System</span>
-                  </div>
-                  <Badge className="bg-white/20 text-white border-white/30 px-3 py-1">Enterprise</Badge>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-10 bg-gradient-to-br from-slate-50 to-white">
-              <div className="space-y-10">
-                <div className="flex gap-6">
-                  <div className="flex-1 relative">
-                    <div className="bg-white rounded-2xl p-5 flex items-center gap-4 shadow-lg border border-slate-200 hover:shadow-xl transition-all duration-300">
-                      <div className="bg-cyan-100 p-3 rounded-xl">
-                        <FaSearch className="text-cyan-600" />
-                      </div>
-                      <span className="text-slate-500 flex-1 font-medium">Find safety notices from Aug 2025...</span>
-                      <Badge className="bg-cyan-50 text-cyan-700 border-cyan-200 px-3 py-1">AI Search</Badge>
-                    </div>
-                  </div>
-                  <Button className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white px-10 py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                    <FaBolt className="mr-3" />
-                    Search
-                  </Button>
-                </div>
-
-                <div className="grid md:grid-cols-4 gap-6">
-                  <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-orange-50 to-orange-100/50 group">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm text-orange-700 flex items-center justify-between font-semibold">
-                        Critical Alerts
-                        <div className="bg-orange-200 p-2 rounded-lg group-hover:bg-orange-300 transition-colors duration-300">
-                          <FaExclamationTriangle className="text-orange-600 text-sm" />
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-4xl font-bold text-orange-600 mb-2">3</div>
-                      <p className="text-xs text-orange-600 mb-3 font-medium">Pending Review</p>
-                      <Progress value={75} className="h-2 bg-orange-200" />
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-green-50 to-green-100/50 group">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm text-green-700 flex items-center justify-between font-semibold">
-                        Processed Today
-                        <div className="bg-green-200 p-2 rounded-lg group-hover:bg-green-300 transition-colors duration-300">
-                          <FaCheckCircle className="text-green-600 text-sm" />
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-4xl font-bold text-green-600 mb-2">47</div>
-                      <p className="text-xs text-green-600 mb-3 font-medium">Documents</p>
-                      <Progress value={94} className="h-2 bg-green-200" />
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-blue-50 to-blue-100/50 group">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm text-blue-700 flex items-center justify-between font-semibold">
-                        Active Departments
-                        <div className="bg-blue-200 p-2 rounded-lg group-hover:bg-blue-300 transition-colors duration-300">
-                          <FaUsers className="text-blue-600 text-sm" />
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-4xl font-bold text-blue-600 mb-2">8</div>
-                      <p className="text-xs text-blue-600 mb-3 font-medium">Connected</p>
-                      <Progress value={100} className="h-2 bg-blue-200" />
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-purple-50 to-purple-100/50 group">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm text-purple-700 flex items-center justify-between font-semibold">
-                        AI Efficiency
-                        <div className="bg-purple-200 p-2 rounded-lg group-hover:bg-purple-300 transition-colors duration-300">
-                          <FaRobot className="text-purple-600 text-sm" />
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-4xl font-bold text-purple-600 mb-2">98.7%</div>
-                      <p className="text-xs text-purple-600 mb-3 font-medium">Accuracy</p>
-                      <Progress value={98.7} className="h-2 bg-purple-200" />
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-bold text-slate-900 flex items-center gap-3 text-lg">
-                      <div className="bg-cyan-100 p-2 rounded-lg">
-                        <IoDocumentText className="text-cyan-600" />
-                      </div>
-                      Recent AI Summaries
-                    </h4>
-                    <Badge className="bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 border-cyan-200 px-4 py-2">
-                      Live Updates
-                    </Badge>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="bg-white rounded-2xl p-6 flex items-center justify-between shadow-lg border border-slate-200 hover:shadow-xl transition-all duration-300 group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                        <div>
-                          <p className="font-semibold text-slate-900 group-hover:text-cyan-600 transition-colors duration-300">
-                            Safety Protocol Update - Platform 2
-                          </p>
-                          <p className="text-sm text-slate-600 flex items-center gap-2 mt-1">
-                            <FaUsers className="text-cyan-500" />
-                            Engineering • 2 hours ago • AI Processed
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Badge className="bg-red-50 text-red-600 border-red-200 px-3 py-1">High Priority</Badge>
-                        <Button size="sm" variant="ghost" className="text-cyan-600 hover:bg-cyan-50 p-3 rounded-xl">
-                          <FaEye />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="bg-white rounded-2xl p-6 flex items-center justify-between shadow-lg border border-slate-200 hover:shadow-xl transition-all duration-300 group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                        <div>
-                          <p className="font-semibold text-slate-900 group-hover:text-cyan-600 transition-colors duration-300">
-                            Maintenance Schedule - Week 34
-                          </p>
-                          <p className="text-sm text-slate-600 flex items-center gap-2 mt-1">
-                            <FaUsers className="text-cyan-500" />
-                            Operations • 4 hours ago • Auto-Routed
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Badge className="bg-green-50 text-green-600 border-green-200 px-3 py-1">Normal</Badge>
-                        <Button size="sm" variant="ghost" className="text-cyan-600 hover:bg-cyan-50 p-3 rounded-xl">
-                          <FaEye />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
 
       {/* Benefits Section - Enhanced */}
       <section className="py-20 px-6 bg-gradient-to-br from-cyan-500 via-cyan-600 to-cyan-700 text-white relative overflow-hidden">
@@ -899,7 +711,7 @@ export default function HomePage() {
               <FaRocket className="mr-2" />
               Operational Impact
             </Badge>
-            <h2 className="text-5xl font-bold mb-6 tracking-tight">Transformative Impact for KMRL</h2>
+            <h2 className="text-5xl font-bold mb-6 tracking-tight">Transformative Impact for the modern organisations</h2>
             <p className="text-xl text-cyan-100 max-w-3xl mx-auto leading-relaxed">
               Measurable improvements across all operational dimensions with enterprise-grade performance
             </p>
@@ -981,145 +793,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-10">
-            <div className="md:col-span-1">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-cyan-500 p-3 rounded-xl shadow-lg">
-                  <IoTrainSharp className="text-2xl text-white" />
-                </div>
-                <div>
-                  <span className="font-bold text-xl text-white">KMRL Document AI</span>
-                  <p className="text-slate-400 text-sm">Enterprise Intelligence Platform</p>
-                </div>
-              </div>
-              <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                Kochi Metro Rail Limited's flagship AI-powered document automation platform, transforming operational
-                excellence through intelligent technology.
-              </p>
-              <div className="flex gap-4">
-                <div className="bg-slate-700 p-2 rounded-lg">
-                  <FaCheckCircle className="text-cyan-400" />
-                </div>
-                <div className="bg-slate-700 p-2 rounded-lg">
-                  <FaShieldAlt className="text-cyan-400" />
-                </div>
-                <div className="bg-slate-700 p-2 rounded-lg">
-                  <FaRocket className="text-cyan-400" />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-white">Platform</h4>
-              <ul className="space-y-3 text-sm text-slate-400">
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <MdDashboard className="text-xs" />
-                    Executive Dashboard
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaRobot className="text-xs" />
-                    AI Features
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaRoute className="text-xs" />
-                    Integrations
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaChartLine className="text-xs" />
-                    Analytics
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-white">Enterprise Support</h4>
-              <ul className="space-y-3 text-sm text-slate-400">
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <IoDocumentText className="text-xs" />
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaUsers className="text-xs" />
-                    IT Helpdesk
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaAward className="text-xs" />
-                    Training Programs
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <MdSecurity className="text-xs" />
-                    Security Center
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-white">Organization</h4>
-              <ul className="space-y-3 text-sm text-slate-400">
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <IoTrainSharp className="text-xs" />
-                    About KMRL
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaHandshake className="text-xs" />
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaShieldAlt className="text-xs" />
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-cyan-400 transition-colors duration-300 flex items-center gap-2">
-                    <FaFileAlt className="text-xs" />
-                    Terms of Service
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-slate-700 mt-12 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="text-slate-400 text-sm">
-                <p>&copy; 2025 Kochi Metro Rail Limited. All rights reserved.</p>
-              </div>
-              <div className="flex items-center gap-4 text-sm">
-                <Badge className="bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
-                  <FaBolt className="mr-1" />
-                  AI-Powered
-                </Badge>
-                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                  <FaCheckCircle className="mr-1" />
-                  Enterprise Ready
-                </Badge>
-              </div>
-            </div>
-          </div>
+      {/* Minimal Footer */}
+      <footer className="w-full bg-slate-900 text-white py-8 px-4 flex flex-col items-center justify-center mt-16 border-t border-slate-800">
+        <div className="w-full max-w-lg flex flex-col items-center gap-3">
+          <div className="text-base font-medium tracking-wide">Prepared by <span className="font-bold text-cyan-300">Pragya Singh</span></div>
+          <div className="text-sm text-slate-200">Organisational Document Management &bull; <span className="font-semibold text-cyan-200">DocuStream</span></div>
+          <div className="text-sm text-slate-300">Contact: <a href="mailto:pragya220898@gmail.com" className="underline hover:text-cyan-300">pragya220898@gmail.com</a></div>
+          <div className="w-16 border-b border-slate-700 my-2"></div>
+          <div className="text-xs text-slate-400 tracking-wider">All rights reserved</div>
         </div>
       </footer>
     </div>
