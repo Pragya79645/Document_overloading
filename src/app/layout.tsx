@@ -4,8 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/hooks/use-auth';
 
 export const metadata: Metadata = {
-  title: 'Kochi Metro DocuSnap',
-  description: 'An automated solution for document overload at Kochi Metro Rail Limited (KMRL)',
+  title: 'org doc management',
+  description: 'An automated solution for document overload in modern organisations',
 };
 
 export default function RootLayout({
