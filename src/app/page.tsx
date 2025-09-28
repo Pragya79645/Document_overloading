@@ -94,23 +94,14 @@ export default function HomePage() {
               <div className="flex items-center space-x-3">
                 <Link href="/signin">
                   <Button
-                    variant="ghost"
                     size="lg"
-                    className="text-slate-700 hover:text-slate-900 font-semibold px-6 py-3 rounded-xl hover:bg-slate-100 transition-all duration-200 border border-slate-200 hover:border-slate-300"
+                    style={{ backgroundColor: "#0891b2", color: "#ffffff" }}
+                    className="!bg-cyan-600 !text-white hover:!bg-cyan-700 hover:!text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-cyan-600 hover:border-cyan-700"
                   >
                     Sign In
                   </Button>
                 </Link>
-                <Link href="/onboarding">
-                  <Button
-                    size="lg"
-                    style={{ backgroundColor: "#0891b2", color: "#ffffff" }}
-                    className="!bg-cyan-600 !text-white hover:!bg-cyan-700 hover:!text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center space-x-2 transform hover:scale-105"
-                  >
-                    <span style={{ color: "#ffffff" }}>Get Started</span>
-                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                  </Button>
-                </Link>
+               
               </div>
             </div>
           </div>
