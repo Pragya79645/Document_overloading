@@ -147,7 +147,7 @@ export function AppHeader({ breadcrumbs, pageTitle }: AppHeaderProps) {
             <Button variant="secondary" size="icon" className="rounded-full">
                <Avatar>
                 <AvatarImage src={user?.avatarUrl} alt={user?.name} />
-                <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{user?.name ? user.name.charAt(0) : '?'}</AvatarFallback>
               </Avatar>
               <span className="sr-only">Toggle user menu</span>
             </Button>

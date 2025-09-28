@@ -236,7 +236,7 @@ export function UserManagement() {
                     <Avatar>
                       <AvatarImage src={user.avatarUrl} alt={user.name} />
                       <AvatarFallback>
-                        {user.name.charAt(0)}
+                        {user.name ? user.name.charAt(0) : '?'}
                       </AvatarFallback>
                     </Avatar>
                     <div>

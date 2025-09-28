@@ -6,25 +6,47 @@ import { Button } from '@/components/ui/button';
 import { Train, LogIn } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 
 export default function LoginPage() {
-  const { authUser, loading, signInWithGoogle } = useAuth();
+  const { authUser, loading, signInWithEmail, signUpWithEmail } = useAuth();
   const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
 
   useEffect(() => {
     if (!loading && authUser) {
       router.push('/dashboard');
     }
   }, [authUser, loading, router]);
-  
-  const handleLogin = async () => {
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
     try {
-      await signInWithGoogle();
-      // The useEffect will handle the redirect
-    } catch (error) {
-      console.error("Login failed:", error);
-      // Optionally, show a toast notification for the error
+      await signInWithEmail(email, password);
+    } catch (err: any) {
+      setError(err?.message || 'Login failed');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    try {
+      await signUpWithEmail('', email, password);
+    } catch (err: any) {
+      setError(err?.message || 'Sign up failed');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -42,15 +64,87 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 pt-4">
-            <p className="text-center text-sm text-muted-foreground">
-              Log in with your official Google account to continue.
-            </p>
-            <div className="flex flex-col space-y-2">
-               <Button size="lg" onClick={handleLogin} disabled={loading}>
-                 <LogIn className="mr-2 h-5 w-5" />
-                 {loading ? 'Authenticating...' : 'Sign in with Google'}
-              </Button>
-            </div>
+            {isSignUp ? (
+              <form className="space-y-4" onSubmit={handleSignUp}>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    disabled={submitting || loading}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium">Password</label>
+                  <input
+                    id="password"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    disabled={submitting || loading}
+                  />
+                </div>
+                {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+                <Button size="lg" type="submit" disabled={submitting || loading}>
+                  <LogIn className="mr-2 h-5 w-5" />
+                  {submitting || loading ? 'Signing up...' : 'Sign up'}
+                </Button>
+                <div className="text-center text-sm pt-2">
+                  Already have an account?{' '}
+                  <button type="button" className="text-blue-600 hover:underline" onClick={() => setIsSignUp(false)} disabled={submitting || loading}>
+                    Sign in
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form className="space-y-4" onSubmit={handleLogin}>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    disabled={submitting || loading}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium">Password</label>
+                  <input
+                    id="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="mt-1 w-full rounded border px-3 py-2 text-sm"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    disabled={submitting || loading}
+                  />
+                </div>
+                {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+                <Button size="lg" type="submit" disabled={submitting || loading}>
+                  <LogIn className="mr-2 h-5 w-5" />
+                  {submitting || loading ? 'Authenticating...' : 'Sign in'}
+                </Button>
+                <div className="text-center text-sm pt-2">
+                  Don't have an account?{' '}
+                  <button type="button" className="text-blue-600 hover:underline" onClick={() => setIsSignUp(true)} disabled={submitting || loading}>
+                    Sign up
+                  </button>
+                </div>
+              </form>
+            )}
           </CardContent>
         </Card>
         <p className="mt-8 text-center text-xs text-muted-foreground">
